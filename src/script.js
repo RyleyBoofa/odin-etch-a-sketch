@@ -20,6 +20,7 @@ function addGridItems(gridSize) {
             gridItem.id = `row${i}-col${j}`;
             gridItem.style.width = `${itemWidth}px`;
             gridItem.style.height = `${itemHeight}px`;
+            gridItem.style.backgroundColor = "white";
             gridContainer.appendChild(gridItem);
         }
     }
@@ -53,13 +54,13 @@ function getNewGridSize() {
 
 function clearGrid() {
     Array.from(gridContainer.children).forEach(
-        (gridItem) => (gridItem.style.backgroundColor = null)
+        (gridItem) => (gridItem.style.backgroundColor = "white")
     );
 }
 
 function setGridItemColor(event) {
     const target = event.target;
-    if (!target.style.backgroundColor) {
+    if (target.style.backgroundColor === "white") {
         setRandomColor(target);
     } else {
         increaseColorAlpha(target);

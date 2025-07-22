@@ -13,6 +13,7 @@ h1, p {
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-width: 100vw;
@@ -35,4 +36,15 @@ body {
 .grid-item {
     background-color: grey;
     border: 1px solid black;
+}
+
+.button-container {
+    margin: 20px auto;
+}
+
+#grid-button {
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 0.5em 1em;
 }

@@ -1,24 +1,20 @@
 const DEFAULT_GRID_SIZE = 16;
-const gridContainer = document.querySelector(".grid-container");
-document.querySelector("#grid-button").addEventListener("click", resizeGrid);
 
-function createGrid(size = DEFAULT_GRID_SIZE) {
-    addGridItems(size);
+const gridContainer = document.querySelector(".grid-container");
+document.querySelector("#clear-button").addEventListener("click", clearGrid);
+document.querySelector("#resize-button").addEventListener("click", resizeGrid);
+
+function createGrid(gridSize = DEFAULT_GRID_SIZE) {
+    addGridItems(gridSize);
     addGridEventListener();
 }
 
-function resizeGrid() {
-    const size = getNewGridSize();
-    clearGrid();
-    createGrid(size);
-}
+function addGridItems(gridSize) {
+    const itemWidth = gridContainer.offsetWidth / gridSize;
+    const itemHeight = gridContainer.offsetHeight / gridSize;
 
-function addGridItems(size) {
-    const itemWidth = gridContainer.offsetWidth / size;
-    const itemHeight = gridContainer.offsetHeight / size;
-
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
             const gridItem = document.createElement("div");
             gridItem.classList.add("grid-item");
             gridItem.id = `row${i}-col${j}`;
@@ -30,13 +26,16 @@ function addGridItems(size) {
 }
 
 function addGridEventListener() {
-    gridContainer.addEventListener(
-        "mouseenter",
-        (e) => {
-            e.target.style.backgroundColor = "black";
-        },
-        true
-    );
+    gridContainer.addEventListener("mouseenter", setGridItemColor, true);
+}
+
+function resizeGrid() {
+    emptyGridContainer();
+    createGrid(getNewGridSize());
+}
+
+function emptyGridContainer() {
+    Array.from(gridContainer.children).forEach((gridItem) => gridItem.remove());
 }
 
 function getNewGridSize() {
@@ -53,10 +52,36 @@ function getNewGridSize() {
 }
 
 function clearGrid() {
-    Array.from(gridContainer.children).forEach((gridItem) => {
-        console.log(gridItem);
-        gridItem.remove();
-    });
+    Array.from(gridContainer.children).forEach(
+        (gridItem) => (gridItem.style.backgroundColor = null)
+    );
+}
+
+function setGridItemColor(event) {
+    const target = event.target;
+    if (!target.style.backgroundColor) {
+        setRandomColor(target);
+    } else {
+        increaseColorAlpha(target);
+    }
+}
+
+function setRandomColor(target) {
+    let red = getRandomInt(255);
+    let green = getRandomInt(255);
+    let blue = getRandomInt(255);
+    target.style.backgroundColor = `rgb(${red}, ${green}, ${blue}, 0.1)`;
+}
+
+function increaseColorAlpha(target) {
+    const color = target.style.backgroundColor;
+    if (color.slice(0, 4) !== "rgba") return;
+    const alpha = parseFloat(color.split(", ")[3].slice(0, -1));
+    target.style.backgroundColor = color.replace(alpha, alpha + 0.1);
+}
+
+function getRandomInt(number) {
+    return Math.floor(Math.random() * (number + 1));
 }
 
 createGrid();

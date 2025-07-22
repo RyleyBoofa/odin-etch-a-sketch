@@ -12,6 +12,7 @@ h1, p {
 }
 
 body {
+    background-color: grey;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,7 +27,7 @@ body {
     justify-content: center;
     align-content: center;
     align-items: center;
-    background-color: grey;
+    background-color: white;
     min-width: 960px;
     min-height: 960px;
     max-width: 960px;
@@ -34,7 +35,7 @@ body {
 }
 
 .grid-item {
-    background-color: grey;
+    background-color: white;
     border: 1px solid black;
 }
 
@@ -42,9 +43,11 @@ body {
     margin: 20px auto;
 }
 
-#grid-button {
+.grid-button {
     border: 2px solid black;
     border-radius: 5px;
     font-size: 16px;
-    padding: 0.5em 1em;
+    width: 10em;
+    height: 2em;
+    margin: 1em;
 }

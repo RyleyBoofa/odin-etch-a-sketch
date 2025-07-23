@@ -3,6 +3,9 @@ const DEFAULT_GRID_SIZE = 16;
 const gridContainer = document.querySelector(".grid-container");
 document.querySelector("#clear-button").addEventListener("click", clearGrid);
 document.querySelector("#resize-button").addEventListener("click", resizeGrid);
+document.querySelector("#color-buttons").addEventListener("click", setColorChoice);
+
+let desiredColor = null;
 
 function createGrid(gridSize = DEFAULT_GRID_SIZE) {
     addGridItems(gridSize);
@@ -61,7 +64,11 @@ function clearGrid() {
 function setGridItemColor(event) {
     const target = event.target;
     if (target.style.backgroundColor === "white") {
-        setRandomColor(target);
+        if (desiredColor === null) {
+            setRandomColor(target);
+        } else {
+            setDesiredColor(target);
+        }
     } else {
         increaseColorAlpha(target);
     }
@@ -74,6 +81,24 @@ function setRandomColor(target) {
     target.style.backgroundColor = `rgb(${red}, ${green}, ${blue}, 0.1)`;
 }
 
+function setDesiredColor(target) {
+    console.log(desiredColor);
+    switch (desiredColor) {
+        case "black":
+            target.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+            break;
+        case "red":
+            target.style.backgroundColor = "rgba(255, 0, 0, 0.1)";
+            break;
+        case "green":
+            target.style.backgroundColor = "rgba(0, 255, 0, 0.1)";
+            break;
+        case "blue":
+            target.style.backgroundColor = "rgba(0, 0, 255, 0.1)";
+            break;
+    }
+}
+
 function increaseColorAlpha(target) {
     const color = target.style.backgroundColor;
     if (color.slice(0, 4) !== "rgba") return;
@@ -83,6 +108,15 @@ function increaseColorAlpha(target) {
 
 function getRandomInt(number) {
     return Math.floor(Math.random() * (number + 1));
+}
+
+function setColorChoice(event) {
+    const target = event.target;
+    if (target.id === "rainbow") {
+        desiredColor = null;
+    } else {
+        desiredColor = target.id;
+    }
 }
 
 createGrid();

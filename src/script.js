@@ -7,7 +7,9 @@ gridContainer.addEventListener("mouseover", setGridItemColor);
 
 document.querySelector("#clear-button").addEventListener("click", clearGridColors);
 document.querySelector("#resize-button").addEventListener("click", resizeGrid);
-document.querySelector("#color-buttons").addEventListener("click", setDesiredColor);
+
+const colorButtons = document.querySelector("#color-buttons");
+colorButtons.addEventListener("click", setDesiredColor);
 
 function createGrid(gridSize = DEFAULT_GRID_SIZE) {
     const itemWidth = gridContainer.offsetWidth / gridSize;
@@ -50,10 +52,17 @@ function getNewGridSize() {
 
 function setDesiredColor(event) {
     const target = event.target;
+
+    Array.from(colorButtons.children).forEach((button) => {
+        button.style.border = "";
+    });
+
     if (target.id === "rainbow") {
         desiredColor = null;
+        target.style.border = "4px solid magenta";
     } else {
         desiredColor = target.id;
+        target.style.border = `4px solid ${desiredColor}`;
     }
 }
 

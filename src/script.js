@@ -39,7 +39,7 @@ function emptyGridContainer() {
 function getNewGridSize() {
     let newSize = 0;
     while (newSize < 1) {
-        let input = parseInt(prompt("Input new grid size"));
+        let input = parseInt(prompt("Input new canvas resolution (1-100)"));
         if (Number.isInteger(input)) {
             if (input > 0 && input <= 100) {
                 newSize = input;

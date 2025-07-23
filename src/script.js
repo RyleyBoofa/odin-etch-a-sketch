@@ -1,12 +1,13 @@
 const DEFAULT_GRID_SIZE = 16;
 
+let desiredColor = null;
+
 const gridContainer = document.querySelector(".grid-container");
 gridContainer.addEventListener("mouseover", setGridItemColor);
-document.querySelector("#clear-button").addEventListener("click", clearGrid);
-document.querySelector("#resize-button").addEventListener("click", resizeGrid);
-document.querySelector("#color-buttons").addEventListener("click", setColorChoice);
 
-let desiredColor = null;
+document.querySelector("#clear-button").addEventListener("click", clearGridColors);
+document.querySelector("#resize-button").addEventListener("click", resizeGrid);
+document.querySelector("#color-buttons").addEventListener("click", setDesiredColor);
 
 function createGrid(gridSize = DEFAULT_GRID_SIZE) {
     const itemWidth = gridContainer.offsetWidth / gridSize;
@@ -47,55 +48,44 @@ function getNewGridSize() {
     return newSize;
 }
 
-function clearGrid() {
-    Array.from(gridContainer.children).forEach(
-        (gridItem) => (gridItem.style.backgroundColor = "white")
-    );
+function setDesiredColor(event) {
+    const target = event.target;
+    if (target.id === "rainbow") {
+        desiredColor = null;
+    } else {
+        desiredColor = target.id;
+    }
 }
 
 function setGridItemColor(event) {
     const target = event.target;
     if (!target.classList.contains("grid-item")) return;
+
     const color = target.style.backgroundColor;
 
     if (desiredColor) {
         if (checkColorMatchesDesired(color)) {
             increaseColorAlpha(target);
         } else {
-            setDesiredColor(target);
+            setColorToDesired(target);
         }
     } else {
         if (color === "white") {
-            setRandomColor(target);
+            setColorToRandom(target);
         } else {
             increaseColorAlpha(target);
         }
     }
 }
 
-function checkColorMatchesDesired(color) {
-    switch (desiredColor) {
-        case "black":
-            return color.includes("(0, 0, 0");
-        case "red":
-            return color.includes("(255, 0, 0");
-        case "green":
-            return color.includes("(0, 255, 0");
-        case "blue":
-            return color.includes("(0, 0, 255");
-        default:
-            return false;
-    }
-}
-
-function setRandomColor(target) {
+function setColorToRandom(target) {
     let red = getRandomInt(255);
     let green = getRandomInt(255);
     let blue = getRandomInt(255);
     target.style.backgroundColor = `rgb(${red}, ${green}, ${blue}, 0.1)`;
 }
 
-function setDesiredColor(target) {
+function setColorToDesired(target) {
     switch (desiredColor) {
         case "white":
             target.style.backgroundColor = "white";
@@ -115,6 +105,21 @@ function setDesiredColor(target) {
     }
 }
 
+function checkColorMatchesDesired(color) {
+    switch (desiredColor) {
+        case "black":
+            return color.includes("(0, 0, 0");
+        case "red":
+            return color.includes("(255, 0, 0");
+        case "green":
+            return color.includes("(0, 255, 0");
+        case "blue":
+            return color.includes("(0, 0, 255");
+        default:
+            return false;
+    }
+}
+
 function increaseColorAlpha(target) {
     const color = target.style.backgroundColor;
     if (color.slice(0, 4) !== "rgba") return;
@@ -126,13 +131,10 @@ function getRandomInt(number) {
     return Math.floor(Math.random() * (number + 1));
 }
 
-function setColorChoice(event) {
-    const target = event.target;
-    if (target.id === "rainbow") {
-        desiredColor = null;
-    } else {
-        desiredColor = target.id;
-    }
+function clearGridColors() {
+    Array.from(gridContainer.children).forEach(
+        (gridItem) => (gridItem.style.backgroundColor = "white")
+    );
 }
 
 createGrid();

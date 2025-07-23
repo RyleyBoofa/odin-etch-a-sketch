@@ -49,6 +49,8 @@ h1 {
 }
 
 .color-button {
+    color: white;
+    background-color: grey;
     border: 2px solid black;
     border-radius: 5px;
     font-size: 16px;
@@ -57,6 +59,8 @@ h1 {
 }
 
 .grid-button {
+    color: white;
+    background-color: grey;
     border: 2px solid black;
     border-radius: 5px;
     font-size: 16px;
@@ -64,24 +68,29 @@ h1 {
     height: 30px;
 }
 
+#white:hover {
+    color: black;
+    background-color: white;
+}
+
 #black:hover {
     color: white;
-    background-color: rgb(0, 0, 0);
+    background-color: black;
 }
 
 #red:hover {
     color: white;
-    background-color: rgb(255, 0, 0);
+    background-color: red;
 }
 
 #green:hover {
     color: white;
-    background-color: rgb(0, 255, 0);
+    background-color: green;
 }
 
 #blue:hover {
     color: white;
-    background-color: rgb(0, 0, 255);
+    background-color: blue;
 }
 
 #rainbow:hover {

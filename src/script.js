@@ -1,6 +1,7 @@
 const DEFAULT_GRID_SIZE = 16;
 
 const gridContainer = document.querySelector(".grid-container");
+gridContainer.addEventListener("mouseover", setGridItemColor);
 document.querySelector("#clear-button").addEventListener("click", clearGrid);
 document.querySelector("#resize-button").addEventListener("click", resizeGrid);
 document.querySelector("#color-buttons").addEventListener("click", setColorChoice);
@@ -8,11 +9,6 @@ document.querySelector("#color-buttons").addEventListener("click", setColorChoic
 let desiredColor = null;
 
 function createGrid(gridSize = DEFAULT_GRID_SIZE) {
-    addGridItems(gridSize);
-    addGridEventListener();
-}
-
-function addGridItems(gridSize) {
     const itemWidth = gridContainer.offsetWidth / gridSize;
     const itemHeight = gridContainer.offsetHeight / gridSize;
 
@@ -27,10 +23,6 @@ function addGridItems(gridSize) {
             gridContainer.appendChild(gridItem);
         }
     }
-}
-
-function addGridEventListener() {
-    gridContainer.addEventListener("mouseenter", setGridItemColor, true);
 }
 
 function resizeGrid() {
@@ -63,14 +55,36 @@ function clearGrid() {
 
 function setGridItemColor(event) {
     const target = event.target;
-    if (target.style.backgroundColor === "white") {
-        if (desiredColor === null) {
-            setRandomColor(target);
+    if (!target.classList.contains("grid-item")) return;
+    const color = target.style.backgroundColor;
+
+    if (desiredColor) {
+        if (checkColorMatchesDesired(color)) {
+            increaseColorAlpha(target);
         } else {
             setDesiredColor(target);
         }
     } else {
-        increaseColorAlpha(target);
+        if (color === "white") {
+            setRandomColor(target);
+        } else {
+            increaseColorAlpha(target);
+        }
+    }
+}
+
+function checkColorMatchesDesired(color) {
+    switch (desiredColor) {
+        case "black":
+            return color.includes("(0, 0, 0");
+        case "red":
+            return color.includes("(255, 0, 0");
+        case "green":
+            return color.includes("(0, 255, 0");
+        case "blue":
+            return color.includes("(0, 0, 255");
+        default:
+            return false;
     }
 }
 
@@ -82,8 +96,10 @@ function setRandomColor(target) {
 }
 
 function setDesiredColor(target) {
-    console.log(desiredColor);
     switch (desiredColor) {
+        case "white":
+            target.style.backgroundColor = "white";
+            break;
         case "black":
             target.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
             break;

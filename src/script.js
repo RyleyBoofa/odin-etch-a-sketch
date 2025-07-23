@@ -12,16 +12,15 @@ const colorButtons = document.querySelector("#color-buttons");
 colorButtons.addEventListener("click", setDesiredColor);
 
 function createGrid(gridSize = DEFAULT_GRID_SIZE) {
-    const itemWidth = 100 / gridSize;
-    const itemHeight = 100 / gridSize;
+    const itemSize = 100 / gridSize;
 
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
             const gridItem = document.createElement("div");
             gridItem.classList.add("grid-item");
             gridItem.id = `row${i}-col${j}`;
-            gridItem.style.width = `${itemWidth}%`;
-            gridItem.style.height = `${itemHeight}%`;
+            gridItem.style.width = `${itemSize}%`;
+            gridItem.style.height = `${itemSize}%`;
             gridItem.style.backgroundColor = "white";
             gridContainer.appendChild(gridItem);
         }

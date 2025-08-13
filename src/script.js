@@ -11,6 +11,9 @@ document.querySelector("#resize-button").addEventListener("click", resizeGrid);
 const colorButtons = document.querySelector("#color-buttons");
 colorButtons.addEventListener("click", setDesiredColor);
 
+const customColor = document.querySelector("#custom-color");
+customColor.addEventListener("change", setCustomColor);
+
 function createGrid(gridSize = DEFAULT_GRID_SIZE) {
     const itemSize = 100 / gridSize;
 
@@ -52,6 +55,9 @@ function getNewGridSize() {
 function setDesiredColor(event) {
     const target = event.target;
 
+    // custom color uses different event type so abort
+    if (event.target.id === "custom-color") return;
+
     Array.from(colorButtons.children).forEach((button) => {
         button.style.border = "";
     });
@@ -63,6 +69,12 @@ function setDesiredColor(event) {
         desiredColor = target.id;
         target.style.border = `4px solid ${desiredColor}`;
     }
+}
+
+function setCustomColor(event) {
+    const target = event.target;
+    desiredColor = target.value;
+    target.style.border = `4px solid ${desiredColor}`;
 }
 
 function setGridItemColor(event) {
@@ -110,6 +122,11 @@ function setColorToDesired(target) {
         case "blue":
             target.style.backgroundColor = "rgba(0, 0, 255, 0.1)";
             break;
+        default:
+            const red = parseInt(desiredColor.substring(1, 3), 16);
+            const green = parseInt(desiredColor.substring(3, 5), 16);
+            const blue = parseInt(desiredColor.substring(5, 7), 16);
+            target.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, 0.1)`;
     }
 }
 
@@ -124,6 +141,11 @@ function checkColorMatchesDesired(color) {
         case "blue":
             return color.includes("(0, 0, 255");
         default:
+            // custom colors will be a hex value
+            if (desiredColor[0] === "#") {
+                const red = parseInt(desiredColor.substring(1, 3), 16);
+                return color.includes(`(${red},`);
+            }
             return false;
     }
 }

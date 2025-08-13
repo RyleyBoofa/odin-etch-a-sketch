@@ -1,6 +1,8 @@
 const DEFAULT_GRID_SIZE = 16;
 
+// rainbow selected by default
 let desiredColor = null;
+document.querySelector("#rainbow").style.border = "4px solid magenta";
 
 const gridContainer = document.querySelector(".grid-container");
 gridContainer.addEventListener("mouseover", setGridItemColor);
@@ -8,8 +10,10 @@ gridContainer.addEventListener("mouseover", setGridItemColor);
 document.querySelector("#clear-button").addEventListener("click", clearGridColors);
 document.querySelector("#resize-button").addEventListener("click", resizeGrid);
 
-const colorButtons = document.querySelector("#color-buttons");
-colorButtons.addEventListener("click", setDesiredColor);
+const colorButtons = document.querySelectorAll(".color-button");
+colorButtons.forEach((button) => {
+    button.addEventListener("click", setDesiredColor);
+});
 
 const customColor = document.querySelector("#custom-color");
 customColor.addEventListener("change", setCustomColor);
@@ -55,10 +59,7 @@ function getNewGridSize() {
 function setDesiredColor(event) {
     const target = event.target;
 
-    // custom color uses different event type so abort
-    if (event.target.id === "custom-color") return;
-
-    Array.from(colorButtons.children).forEach((button) => {
+    colorButtons.forEach((button) => {
         button.style.border = "";
     });
 
@@ -123,10 +124,10 @@ function setColorToDesired(target) {
             target.style.backgroundColor = "rgba(0, 0, 255, 0.1)";
             break;
         default:
-            const red = parseInt(desiredColor.substring(1, 3), 16);
-            const green = parseInt(desiredColor.substring(3, 5), 16);
-            const blue = parseInt(desiredColor.substring(5, 7), 16);
-            target.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, 0.1)`;
+            if (desiredColor[0] === "#") {
+                const color = convertHexToRGB(desiredColor);
+                target.style.backgroundColor = `rgba(${color.red}, ${color.green}, ${color.blue}, 0.1)`;
+            }
     }
 }
 
@@ -141,10 +142,9 @@ function checkColorMatchesDesired(color) {
         case "blue":
             return color.includes("(0, 0, 255");
         default:
-            // custom colors will be a hex value
             if (desiredColor[0] === "#") {
-                const red = parseInt(desiredColor.substring(1, 3), 16);
-                return color.includes(`(${red},`);
+                const rgb = convertHexToRGB(desiredColor);
+                return color.includes(`(${rgb.red}, ${rgb.green}, ${rgb.blue}`);
             }
             return false;
     }
@@ -165,6 +165,17 @@ function clearGridColors() {
     Array.from(gridContainer.children).forEach(
         (gridItem) => (gridItem.style.backgroundColor = "white")
     );
+}
+
+function convertHexToRGB(color) {
+    const red = parseInt(color.substring(1, 3), 16);
+    const green = parseInt(color.substring(3, 5), 16);
+    const blue = parseInt(color.substring(5, 7), 16);
+    return {
+        red: red,
+        green: green,
+        blue: blue,
+    };
 }
 
 createGrid();

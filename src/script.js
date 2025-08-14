@@ -62,6 +62,7 @@ function setDesiredColor(event) {
     colorButtons.forEach((button) => {
         button.style.border = "";
     });
+    customColor.style.border = "";
 
     if (target.id === "rainbow") {
         desiredColor = null;
@@ -76,6 +77,9 @@ function setCustomColor(event) {
     const target = event.target;
     desiredColor = target.value;
     target.style.border = `4px solid ${desiredColor}`;
+    colorButtons.forEach((button) => {
+        button.style.border = "";
+    });
 }
 
 function setGridItemColor(event) {

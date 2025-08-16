@@ -2,6 +2,8 @@
 
 Browser-based Etch-a-Sketch, built as my solution to The Odin Project's [Project: Etch-a-Sketch](https://www.theodinproject.com/lessons/foundations-etch-a-sketch), using HTML, CSS, and JavaScript.
 
+Live preview can be found [here](https://ryleyboofa.github.io/odin-etch-a-sketch/).
+
 ## New skills used
 
 -   JavaScript: event delegation, event phases, dynamic DOM manipulation, user input validation, state management
